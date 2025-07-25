@@ -1,0 +1,30 @@
+---
+title: "Getting Started"
+format: 
+  html:
+    embed-resources: true
+---
+
+This is my analysis.
+
+```{r}
+library(tidyverse) #better for data analysis and data science for basic r
+df <- read_csv("Sanitation_Salvage_Truck_Violations_20250725.csv")
+violation_type <- df |> group_by(Violation) |>
+  summarize(count = n())
+ggplot(violation_type, aes(x = count, y = reorder(Violation, count))) + 
+  geom_col()
+```
+
+```{r}
+df <- df |>
+  mutate(time_of_day = ifelse(str_detect(`Violation Time`, "A"), "AM", "PM"))
+# this creates a new column
+
+ggplot(df, aes(y = fct_infreq(time_of_day))) + geom_bar()
+
+ggplot(df, aes(x = fct_infreq(time_of_day))) + geom_bar()
+
+
+```
+
